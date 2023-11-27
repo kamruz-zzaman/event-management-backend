@@ -21,9 +21,15 @@ const EventSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-  }, {
-  timestamps: true,
-}
+    rsvp: {
+      type: Array,
+      required: false,
+      default: []
+    },
+  },
+  {
+    timestamps: true,
+  }
 );
 
 const Event = mongoose.model("Events", EventSchema);

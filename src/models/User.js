@@ -23,6 +23,11 @@ const UserSchema = new mongoose.Schema(
       type: String || Number,
       required: true,
     },
+    event: {
+      type: Array,
+      required: false,
+      default: []
+    },
   },
   {
     timestamps: true,
