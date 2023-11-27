@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 const authRoute = require("./src/routes/userRoute");
+const eventRoute = require("./src/routes/eventRoute");
 
 // User Middlewares
 app.use(cors());
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 // -----
 // Routes
 app.use("/api/v1/user", authRoute);
+app.use("/api/v1/event", eventRoute);
 // -----
 // ----------
 // ---------------

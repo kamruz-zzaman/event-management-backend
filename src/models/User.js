@@ -23,12 +23,6 @@ const UserSchema = new mongoose.Schema(
       type: String || Number,
       required: true,
     },
-    // thumbNail: {
-    //   type: String,
-    //   required: false,
-    //   // required: true,
-    //   trim: true,
-    // },
   },
   {
     timestamps: true,
