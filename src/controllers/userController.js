@@ -5,9 +5,9 @@ require("dotenv").config();
 
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password, phone } = req.body;
+    const { first_name, last_name, email, password, phone } = req.body;
 
-    if (!name || !email || !password || !phone) {
+    if (!first_name || !last_name || !email || !password || !phone) {
       throw new Error("All field are required!");
     }
 
@@ -23,7 +23,8 @@ const registerUser = async (req, res) => {
     const createUser = {
       email,
       password: hashPassowrd,
-      name,
+      first_name,
+      last_name,
       phone,
 
       // thumbNail: thumbNail || null,
@@ -41,7 +42,8 @@ const registerUser = async (req, res) => {
       data: {
         accessToken: token,
         user: {
-          name: user.name,
+          first_name: user.first_name,
+          last_name: user.last_name,
           email: user.email,
           phone: user.phone,
           _id: user._id,
@@ -94,7 +96,8 @@ const loginUser = async (req, res) => {
       data: {
         accessToken: token,
         user: {
-          name: user.name,
+          first_name: user.first_name,
+          last_name: user.last_name,
           email: user.email,
           phone: user.phone,
           _id: user._id,
@@ -113,7 +116,43 @@ const loginUser = async (req, res) => {
   }
 };
 
+
+// Checking The user is valid or not
+const userInfo = async (req, res, next) => {
+  try {
+    const userId = req?.userId;
+    // Define your search criteria
+    const query = { _id: userId };
+    // Checkng if the user already exist
+    const isUser = await User.findOne(query);
+
+    if (isUser) {
+      return res.status(200).send({
+        user: {
+          first_name: isUser.first_name,
+          last_name: isUser.last_name,
+          email: isUser.email,
+          phone: isUser.phone,
+          _id: isUser._id,
+          // thumbNail: isUser.thumbNail,
+          role: isUser.role,
+          createdAt: isUser.createdAt,
+          updatedAt: isUser.updatedAt,
+        },
+        message: "valid user",
+      });
+    } else {
+      return res.status(404).send({
+        message: "user data isn't available!",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  userInfo
 };
